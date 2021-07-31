@@ -54,12 +54,13 @@ def get_pmi():
     df_jpm_pmi['date'] = dates
     df_jpm_pmi.set_index('date', inplace=True)
 
-    store = pd.HDFStore('H:\\data\\hdf\\pmi.h5', mode='r')
-    df_bbg_pmi = pd.DataFrame()
-    for i in store.keys():
-        if i not in ['JPY1_MAN']:
-            df_bbg_pmi[i.split('_')[0][1:]] = store[i]['closep']
-    store.close()
+    df_bbg_pmi = funs.read_csv(folder_path + 'pmi_country.csv', 'date')
+    # store = pd.HDFStore('H:\\data\\hdf\\pmi.h5', mode='r')
+    # df_bbg_pmi = pd.DataFrame()
+    # for i in store.keys():
+    #     if i not in ['JPY1_MAN']:
+    #         df_bbg_pmi[i.split('_')[0][1:]] = store[i]['closep']
+    # store.close()
     ori_cols = df_bbg_pmi.columns
     df_bbg_pmi['Global Average'] = df_bbg_pmi.mean(axis=1)
     df_bbg_pmi['DM'] = df_bbg_pmi[['USD','EUR','GBP','AUD','JPY','CAD','NOK','SEK']].mean(axis=1)

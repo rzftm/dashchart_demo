@@ -6,3 +6,6 @@ venv*/
 venvs/
 envs/
 old/
+*.pyc
+.env
+.DS_Store

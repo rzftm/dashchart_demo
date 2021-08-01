@@ -42,7 +42,7 @@ def get_etf():
     df_em = funs.read_csv(folder_path + 'em_etf_flow.csv')
     df_em['EM ETF + US HY'] = df_em.sum(axis=1)
     df_em_equ = funs.read_csv(folder_path + 'em_equity_flow.csv')
-    df_em_fi = funs.read_csv(folder_path + 'em_fixed income_flow.csv')
+    df_em_fi = funs.read_csv(folder_path + 'em_bond_flow.csv')
     df_gold = funs.read_csv(folder_path + 'gold_etf.csv','date')
     df_etf = pd.concat([df_em['EM ETF + US HY'], df_em_equ['daily'], df_em_fi['daily'], df_gold['holdings in troy ounce'].diff()], axis=1)
     df_etf.columns = ['EM ETF + US HY', 'EM Equity', 'EM fixed income', 'GOLD']

@@ -28,7 +28,8 @@ def read_csv(data_path, index_name='Unnamed: 0'):
     '''
     read csv and change index
     '''
-    df = pd.read_csv(data_path)
+    # df = pd.read_csv(data_path)
+    df = pd.read_csv(data_path, sep=",")
     df.set_index(index_name, inplace=True)
     try:
         df.index = pd.to_datetime(df.index, format="%d/%m/%Y")

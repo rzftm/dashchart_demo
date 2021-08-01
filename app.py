@@ -3,7 +3,7 @@ import dash
 import dash_bootstrap_components as dbc
 
 
-folder_path = os.getcwd() + "\\data\\"
+folder_path = "https://raw.githubusercontent.com/rzftm/dashchart_demo/master/data/"
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 
 

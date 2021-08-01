@@ -14,7 +14,7 @@ import funs
 
 # CTA performance
 def get_cta_data():
-    data_path = "H:\\_CODE\\py1\\output\\backtest\\trend_performance.csv"
+    data_path = folder_path + "trend_performance.csv"
     df = funs.read_csv(data_path, 'Unnamed: 0')
     df.columns = ['TFA','TFV','TFT','TCR1','TCR2','TEC','TBB','RF','RE']
     df['Total'] = df[['TFA','TFV','TFT','TCR1','TCR2','TEC','RF','RE']].sum(axis=1)

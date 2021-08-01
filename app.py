@@ -28,6 +28,7 @@ from dash.dependencies import Input, Output
 
 folder_path = "H:\\_CODE\\dashchart_demo\\data\\"
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {

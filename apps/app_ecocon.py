@@ -4,7 +4,6 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 
 import pandas as pd
-import numpy as np
 import datetime as dt
 from dateutil.rrule import *
 

@@ -3,20 +3,8 @@ import numpy as np
 import datetime as dt
 import math
 import os
-import pyodbc
 from app import folder_path
 
-connstr_db6 = "DRIVER={SQL Server};SERVER=CLNSQL03;DATABASE=MainDB6;UID=sa;PWD=Dr3vil?"
-
-def getlist(sql="select * from ListTRACA order by No", connstr=connstr_db6):
-    '''
-    execute sql and return dataframe
-    '''
-
-    conn = pyodbc.connect(connstr)
-    dt = pd.read_sql(sql,conn)
-    conn.close()
-    return dt
 
 def performance_summary(data, capital=1):
     '''

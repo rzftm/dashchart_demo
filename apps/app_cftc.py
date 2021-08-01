@@ -1,12 +1,10 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import pandas as pd
-import numpy as np
 import datetime as dt
 
 from app import app, folder_path

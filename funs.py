@@ -49,41 +49,6 @@ def read_pnl(data_path):
     return df[['DailyReturn']]
 
 
-def read_pmi():
-    '''
-    read the latest JPM Global PMI to Dataframe
-    '''
-
-    fri_path = folder_path
-    onlyfiles = [f for f in os.listdir(fri_path) if os.path.isfile(os.path.join(fri_path, f))]
-    jpmf = [s for s in onlyfiles if "JPM_Global_PMI_Historica" in s]
-    jpmds = [s.split('_')[4] for s in jpmf]
-    jpmd = [dt.datetime.strptime(date, "%Y-%m-%d") for date in jpmds]
-    file_name = jpmf[jpmd.index(max(jpmd))]
-
-    df_fri = pd.read_excel(fri_path + file_name, 'Global PMI', skiprows=[0, 1, 2, 3, 5])
-    df_fri.columns = ['Date', 'Manufacturing Overall','Manufacturing Output',
-                      'Manufacturing New orders','Manufacturing Export orders',
-                      'Manufacturing Input prices','Manufacturing Suppliers delivery times',
-                      'Manufacturing Stocks of purchases','Manufacturing Finished goods inventories',
-                      'Manufacturing Employment','Manufacturing Output prices',
-                      'Manufacturing JPMorgan global manufacturing PMI - quantity of purchases',
-                      'Manufacturing Backlogs of work','Manufacturing Future output',
-                      'Services Business activity','Services New business',
-                      'Services Input prices','Services Employment','Services Backlogs of work',
-                      'Services Output prices','Services Future business activity',
-                      'All-industry Output/business activity','All-industry New business',
-                      'All-industry Input prices','All-industry Employment',
-                      'All-industry Output prices','All-industry Backlogs of work']
-    df_fri.set_index('Date', inplace=True)
-    df_fri.index = pd.to_datetime(df_fri.index, format='%Y-%m-%d')
-    for k in df_fri.columns:
-        df_fri[k] = df_fri[k].apply(lambda x: np.NaN if isinstance(x, str) else x)
-    df_fri = df_fri.apply(pd.to_numeric)
-
-    return df_fri
-
-
 def percentilerank(X, p):
     '''
     calculate percentile rank, return a number between 0 and 1

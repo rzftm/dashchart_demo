@@ -43,7 +43,7 @@ def get_monthly_cgi():
 
 def get_pmi():
     # PMI
-    df_jpm_pmi = funs.read_pmi()
+    df_jpm_pmi = funs.read_csv(folder_path+'JPM_GLOBAL_PMI.csv', 'Date')
     df_jpm_pmi['New orders-inventory'] = df_jpm_pmi['Manufacturing New orders'] - df_jpm_pmi['Manufacturing Finished goods inventories']
     df_jpm_pmi['Purchase-inventory'] = df_jpm_pmi['Manufacturing Stocks of purchases'] - df_jpm_pmi['Manufacturing Finished goods inventories']
     df_jpm_pmi = df_jpm_pmi[['Manufacturing Overall','Manufacturing New orders','New orders-inventory','Purchase-inventory','Manufacturing Output prices']]

@@ -7,6 +7,8 @@ from dash.dependencies import Input, Output
 from app import app
 from apps import app_cta, app_ecocon, app_cftc, app_position, app_valuecom
 
+server = app.server
+
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
     "position": "fixed",

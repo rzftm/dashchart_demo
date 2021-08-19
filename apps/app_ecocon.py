@@ -73,25 +73,10 @@ def get_pmi():
     df_pmi = pd.concat([df_jpm_pmi, df_bbg_pmi], axis=1)
     return df_pmi
 
-def get_oecd():
-    # OECD
-    df_oecd = funs.read_csv(folder_path + 'oecd_unrevised.csv')
-    ori_cols = df_oecd.columns
-    df_oecd['Global'] = df_oecd[['USD','EUR','GBP','JPY','AUD','NZD','CAD','CHF','SEK','NOK','CZK', 'PLN', 'HUF', 'TRY', 'ZAR', 'ILS', 'RUB','BRL', 'MXN', 'CLP', 'INR', 'IDR', 'KRW', 'CNY']].mean(axis=1)
-    df_oecd['DM'] = df_oecd[['USD','EUR','GBP','JPY','AUD','NZD','CAD','CHF','SEK','NOK']].mean(axis=1)
-    df_oecd['EM'] = df_oecd[['CZK', 'PLN', 'HUF', 'TRY', 'ZAR', 'ILS', 'RUB','BRL', 'MXN', 'CLP', 'INR', 'IDR', 'KRW', 'CNY']].mean(axis=1)
-    df_oecd['Asia'] = df_oecd['Asia5']
-    df_oecd['CEEMEA'] = df_oecd[['CZK', 'PLN', 'HUF', 'TRY', 'ZAR', 'ILS', 'RUB']].mean(axis=1)
-    df_oecd['LatAM'] = df_oecd[['BRL', 'MXN', 'CLP']].mean(axis=1)
-    df_oecd.index.name = 'date'
-    df_oecd = df_oecd[['Global','DM','EM','Asia','CEEMEA','LatAM']+list(ori_cols)]
-    return df_oecd
-
 
 df_weekly, df_weekly_4w, df_weekly_12w = get_weekly_cgi()
 df_monthly = get_monthly_cgi()
 df_pmi = get_pmi()
-df_oecd = get_oecd()
 
 layout = html.Div([
     # weekly CGI
@@ -208,43 +193,6 @@ layout = html.Div([
         dcc.Graph(id='pmi-chart'),
     ]),
 
-    # OECD
-    html.Div([
-        html.H3(children='OECD Leading Indicator', style={'font-size': '1.2em'}),
-
-        html.Div(children=[
-            html.Label(["Choose a region..."], style={"font-style": "italic"}),
-            dcc.Dropdown(
-                id='oecd-dropdown',
-                options=[
-                    {'label': '{}'.format(i), 'value': i} for i in df_oecd.columns
-                ],
-                value='Global'
-            )],
-            style={"width": "45%", 'display': 'inline-block'},
-        ),
-
-        html.Div(children=[
-            html.Label(["Choose start time..."], style={"font-style": "italic"}),
-            dcc.RadioItems(
-                id='oecd-radio',
-                options=[
-                    {'label': 'Full', 'value': dt.datetime(2000, 1, 1)},
-                    {'label': 'From 2010', 'value': dt.datetime(2010, 1, 1)},
-                    {'label': 'Last 5 years', 'value': dt.datetime(dt.datetime.now().year - 5, 1, 1)},
-                    {'label': 'Last 3 years', 'value': dt.datetime(dt.datetime.now().year - 3, 1, 1)}
-                ],
-                value=dt.datetime(dt.datetime.now().year - 5, 1, 1),
-                labelStyle={'display': 'inline-block', 'margin-right': 10}
-            )],
-            style={"width": "45%", 'float': 'right', 'margin': 'auto'},
-        ),
-
-        html.Br(),
-        html.Br(),
-        html.Div(id='display-oecd-performance', style={"font-weight": "bold"}, ),
-        dcc.Graph(id='oecd-chart'),
-    ]),
 ])
 
 # weekly CGI
@@ -331,34 +279,6 @@ def display_chart(value, sdate):
     fig = px.line(df1)
     fig.update_layout(
         title_text="Manufacture PMI - " + value,
-        template="seaborn",
-        showlegend=False,
-        # dragmode='pan',
-        # xaxis=dict(rangeslider=dict(visible=True), type="date")
-    )
-    return fig
-
-# OECD
-@app.callback(
-    Output('display-oecd-performance', 'children'),
-    Input('oecd-dropdown', 'value'))
-def display_summary(value):
-    df_oecd = get_oecd()
-    latest_index = dt.datetime.strftime(df_oecd[value].index[-1], format='%Y-%m-%d')
-    last_value = df_oecd[value].iloc[-1]
-    return """Latest update {:s}, OECD CLI: {:.2f}, 3m change: {:.2f}.
-            """.format(latest_index, last_value, df_oecd[value].iloc[-1]-df_oecd[value].iloc[-4])
-
-@app.callback(
-    Output('oecd-chart', 'figure'),
-    Input('oecd-dropdown', 'value'),
-    Input('oecd-radio', 'value'))
-def display_chart(value, sdate):
-    df_oecd = get_oecd()
-    df1 = df_oecd.loc[sdate:, value]
-    fig = px.line(df1)
-    fig.update_layout(
-        title_text="OECD CLI - " + value,
         template="seaborn",
         showlegend=False,
         # dragmode='pan',

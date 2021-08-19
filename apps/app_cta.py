@@ -17,12 +17,13 @@ def get_cta_data():
     data_path = folder_path + "trend_performance.csv"
     df = funs.read_csv(data_path, 'Unnamed: 0')
     df.columns = ['TFA','TFV','TFT','TCR1','TCR2','TEC','TBB','RF','RE']
-    df = df * 10
-    df['Total'] = df[['TFA','TFV','TFT','TCR1','TCR2','TEC','RF','RE']].sum(axis=1)
+    df['Trend'] = df[['TFA','TFV','TFT','TCR1','TCR2','TEC','RF','RE']].sum(axis=1) * 10
     df['FX'] = df[['TFA','TFV','TFT','RF','RE']].sum(axis=1)
-    df['Commodity'] = df[['TCR1','TCR2']].sum(axis=1)
-    df = df[['Total','FX','Commodity','TFA','TFV','TFT','TCR1','TCR2','TEC','TBB','RF','RE']]
+    df = df[['Trend','FX']]
     df.index.name = 'date'
+    data_path = folder_path + "intraday_performance.csv"
+    df_intraday = funs.read_csv(data_path, 'Unnamed: 0')
+    df['Intraday'] = df_intraday['Intraday']
     return df
 
 def get_model_performance():
@@ -79,7 +80,7 @@ layout = html.Div([
                 options=[
                         {'label': 'Model - {}'.format(i), 'value': i} for i in df.columns
                     ],
-                value='Total'
+                value='Trend'
                 )],
             style={"width": "45%",'display': 'inline-block'},
             ),

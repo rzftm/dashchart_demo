@@ -5,7 +5,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from apps import app_cta, app_ecocon, app_cftc, app_position, app_valuecom
+from apps import app_cta, app_ecocon, app_cftc, app_position, app_valuecom, app_correlation
 
 server = app.server
 
@@ -42,6 +42,7 @@ sidebar = html.Div(
                 dbc.NavLink("Positioning", href="/page_position", active="exact"),
                 dbc.NavLink("Economic Condition", href="/page_ecocon", active="exact"),
                 dbc.NavLink("Valuation-Commodity", href="/page_valuecom", active="exact"),
+                dbc.NavLink("Correlation", href="/page_correlation", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -67,6 +68,8 @@ def render_page_content(pathname):
         return app_ecocon.layout
     elif pathname == "/page_valuecom":
         return app_valuecom.layout
+    elif pathname == "/page_correlation":
+        return app_correlation.layout
 
     # html.P("Oh cool, this is page 5!")
     # If the user tries to reach a different page, return a 404 message
